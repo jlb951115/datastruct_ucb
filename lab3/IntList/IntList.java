@@ -110,17 +110,19 @@ public class IntList {
 
     public static IntList reverse(IntList L) {
         if (L == null) {
-            return null;
-        } else if (L.rest == null) {
-            return new IntList(L.first, null);
+            return L;
         } else {
-            IntList ref = reverse(L.rest);
-            IntList p = ref;
-            while (p.rest != null) {
-                p = p.rest;
+            IntList p = new IntList(L.first, L.rest);
+            IntList head = null;
+            while (p != null) {
+                IntList temp = p.rest;
+                p.rest = head;
+                head = p;
+                p = temp;
             }
-            p.rest = new IntList(L.first, null);
-            return ref;
+            L.first = head.first;
+            L.rest = head.rest;
+            return L;
         }
     }
 
