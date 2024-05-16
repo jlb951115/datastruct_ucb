@@ -3,6 +3,8 @@ package byog.Core;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 
+import java.util.Locale;
+
 public class Game {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
@@ -33,6 +35,12 @@ public class Game {
         // drawn if the same inputs had been given to playWithKeyboard().
 
         TETile[][] finalWorldFrame = null;
+        String s = input.toLowerCase();
+        if (s.charAt(0) == 'n') {
+            int index = s.indexOf('s');
+            long seed = Long.valueOf(s.substring(1, index).toString());
+            finalWorldFrame = WorldGenerator.Generate(seed, WIDTH, HEIGHT);
+        }
         return finalWorldFrame;
     }
 }
