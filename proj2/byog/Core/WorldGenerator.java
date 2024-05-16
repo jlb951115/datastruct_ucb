@@ -3,6 +3,8 @@ package byog.Core;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.util.Random;
 
@@ -58,6 +60,7 @@ public class WorldGenerator {
                 }
             }
         }
+        lockdoor(width, height, world, seed);
         return world;
     }
 
@@ -82,5 +85,45 @@ public class WorldGenerator {
                 world[i][j] = Tileset.NOTHING;
             }
         }
+    }
+
+    private static boolean iswall(int x, int y, TETile[][] T) {
+        Postion[] p = new Postion[4];
+        int size = 0;
+        if (x > 0) {
+            p[size] = new Postion(x - 1, y);
+            size++;
+        }
+        if (x < T.length - 1) {
+            p[size] = new Postion(x + 1, y);
+            size++;
+        }
+        if (y < T[0].length - 1) {
+            p[size] = new Postion(x, y + 1);
+            size++;
+        }
+        if (y > 0) {
+            p[size] = new Postion(x, y - 1);
+            size++;
+        }
+        for (int i = 0; i < size; i++) {
+            if (!T[p[i].getX()][p[i].getY()].equals(Tileset.WALL)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static void lockdoor(int width, int height, TETile[][] T, long seed) {
+        Random r = new Random(seed);
+        while (true) {
+            int x = r.nextInt(width);
+            int y = r.nextInt(height);
+            if (!iswall(x, y, T)) {
+                T[x][y] = Tileset.LOCKED_DOOR;
+                break;
+            }
+        }
+        return;
     }
 }
