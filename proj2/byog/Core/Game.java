@@ -37,10 +37,22 @@ public class Game {
         TETile[][] finalWorldFrame = null;
         String s = input.toLowerCase();
         if (s.charAt(0) == 'n') {
-            int index = s.indexOf('s');
-            long seed = Long.valueOf(s.substring(1, index).toString());
+            long seed = process(input);
             finalWorldFrame = WorldGenerator.Generate(seed, WIDTH, HEIGHT);
         }
         return finalWorldFrame;
     }
+
+    public static long process(String input) {
+        int index = input.indexOf('s');
+        String s = input.substring(1, index);
+        return Long.valueOf(s);
+    }
+
+    public static void main(String[] args) {
+        long x = process("n4956869837922692650s");
+        long y = process("n48209753395010873s");
+        int m = 0;
+    }
+
 }
