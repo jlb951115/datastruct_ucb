@@ -12,8 +12,8 @@ public class WorldGenerator {
         InitEmpty(world);
         InitBroad(world);
         Random r = new Random(seed);
-        double complexity = r.nextDouble(1);
-        double density = r.nextDouble(1);
+        double complexity = r.nextDouble();
+        double density = r.nextDouble();
         int c = (int) (complexity * (5 * (width + height)));
         int d = (int) (density * (width / 2) * (height / 2));
         for (int i = 0; i < d; i++) {
