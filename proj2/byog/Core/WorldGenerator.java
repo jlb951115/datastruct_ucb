@@ -60,6 +60,7 @@ public class WorldGenerator {
                 }
             }
         }
+        lockdoor(width, height, world, seed);
         return world;
     }
 
