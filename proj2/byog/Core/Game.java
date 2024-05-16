@@ -39,12 +39,12 @@ public class Game {
         String s = input.toLowerCase();
         if (s.charAt(0) == 'n') {
             long seed = process(input);
-            finalWorldFrame = WorldGenerator.Generate(seed, WIDTH, HEIGHT);
+            finalWorldFrame = new WorldGenerator().Generate(seed, WIDTH, HEIGHT);
         }
         return finalWorldFrame;
     }
 
-    public static long process(String input) {
+    public  long process(String input) {
         int index = input.indexOf('s');
         String s = input.substring(1, index);
         return Long.valueOf(s);

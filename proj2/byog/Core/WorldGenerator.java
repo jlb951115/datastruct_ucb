@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.util.Random;
 
 public class WorldGenerator {
-    public static TETile[][] Generate(long seed, int width, int height) {
+    public TETile[][] Generate(long seed, int width, int height) {
         TETile[][] world = new TETile[width][height];
         InitEmpty(world);
         InitBroad(world);
@@ -63,7 +63,7 @@ public class WorldGenerator {
         return world;
     }
 
-    private static void InitBroad(TETile[][] world) {
+    private void InitBroad(TETile[][] world) {
         int width = world.length;
         int height = world[0].length;
         for (int i = 0; i < height; i++) {
@@ -76,7 +76,7 @@ public class WorldGenerator {
         }
     }
 
-    private static void InitEmpty(TETile[][] world) {
+    private  void InitEmpty(TETile[][] world) {
         int width = world.length;
         int height = world[0].length;
         for (int i = 0; i < width; i++) {
@@ -86,7 +86,7 @@ public class WorldGenerator {
         }
     }
 
-    private static boolean iswall(int x, int y, TETile[][] T) {
+    private  boolean iswall(int x, int y, TETile[][] T) {
         Postion[] p = new Postion[4];
         int size = 0;
         if (x > 0) {
@@ -113,7 +113,7 @@ public class WorldGenerator {
         return true;
     }
 
-    private static void lockdoor(int width, int height, TETile[][] T, long seed) {
+    private void lockdoor(int width, int height, TETile[][] T, long seed) {
         Random r = new Random(seed);
         while (true) {
             int x = r.nextInt(width);
