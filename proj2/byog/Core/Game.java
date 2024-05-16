@@ -4,6 +4,7 @@ import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 
 import java.util.Locale;
+import java.util.Random;
 
 public class Game {
     TERenderer ter = new TERenderer();
@@ -47,12 +48,6 @@ public class Game {
         int index = input.indexOf('s');
         String s = input.substring(1, index);
         return Long.valueOf(s);
-    }
-
-    public static void main(String[] args) {
-        long x = process("n4956869837922692650s");
-        long y = process("n48209753395010873s");
-        int m = 0;
     }
 
 }
