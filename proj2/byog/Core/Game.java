@@ -39,7 +39,8 @@ public class Game {
         String s = input.toLowerCase();
         if (s.charAt(0) == 'n') {
             long seed = process(input);
-            finalWorldFrame = new WorldGenerator().Generate(seed, WIDTH, HEIGHT);
+            World w = new World();
+            finalWorldFrame = w.Generate(seed);
         }
         return finalWorldFrame;
     }
