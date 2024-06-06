@@ -46,11 +46,11 @@ public class PercolationStats {
     }
 
     public double confidenceLow() {
-        return this.mean() - (CONSTANT * Math.sqrt(this.stddev()) / Math.sqrt(T));
+        return this.mean() - (CONSTANT * this.stddev() / Math.sqrt(T));
     }
 
     public double confidenceHigh() {
-        return this.mean() + (CONSTANT * Math.sqrt(this.stddev()) / Math.sqrt(T));
+        return this.mean() + (CONSTANT * this.stddev() / Math.sqrt(T));
     }
 
 }

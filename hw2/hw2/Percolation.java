@@ -16,12 +16,15 @@ public class Percolation {
         limation = N;
         topDownSet = new WeightedQuickUnionUF(N * N + 2);
         topSet = new WeightedQuickUnionUF(N * N + 1);
+        int x = N * (N - 1);
+        int p = N * N;
+        int q = p + 1;
         for (int i = 0; i < N; i++) {
-            topSet.union(i, N * N);
-            topDownSet.union(i, N * N);
+            topSet.union(i, p);
+            topDownSet.union(i, p);
         }
         for (int i = 0; i < N; i++) {
-            topDownSet.union(N * (N - 1) + i, N * N + 1);
+            topDownSet.union(x + i, q);
         }
         count = 0;
     }
