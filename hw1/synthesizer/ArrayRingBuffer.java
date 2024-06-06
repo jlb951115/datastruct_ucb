@@ -101,11 +101,13 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         public T next() {
             T x = rb[begin];
             begin += 1;
+            size += 1;
             if (begin == rb.length) {
                 begin = 0;
             }
             return x;
         }
     }
+
 
 }
