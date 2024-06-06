@@ -5,8 +5,8 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
     private int Limation;
     private int[][] Array;
+    private WeightedQuickUnionUF TopDownSet;
     private WeightedQuickUnionUF TopSet;
-    private WeightedQuickUnionUF RowpSet;
     private int count;
     public Percolation(int N) {
         if (N <= 0) {
@@ -14,10 +14,14 @@ public class Percolation {
         }
         Array = new int[N][N];
         Limation = N;
+        TopDownSet = new WeightedQuickUnionUF(N * N + 2);
         TopSet = new WeightedQuickUnionUF(N * N + 1);
-        RowpSet = new WeightedQuickUnionUF(N);
         for (int i = 0; i < N; i++) {
             TopSet.union(i, N * N);
+            TopDownSet.union(i, N * N);
+        }
+        for (int i = 0; i < N; i++) {
+            TopDownSet.union(N * (N - 1) + i, N * N + 1);
         }
         count = 0;
     }
@@ -38,7 +42,8 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        return RowpSet.connected(0, Limation - 1) && count > 0;
+        int x = Limation * Limation;
+        return TopDownSet.connected(x, x + 1) && count > 0;
     }
 
     public boolean isFull(int row, int col) {
@@ -46,7 +51,7 @@ public class Percolation {
             throw new IndexOutOfBoundsException("Out of Bounds");
         }
         int x = getIndex(row, col);
-        return TopSet.connected(x, Limation * Limation) && isOpen(row, col);
+        return isOpen(row, col) && TopSet.connected(x, Limation * Limation);
     }
 
     public void open(int row, int col) {
@@ -65,7 +70,7 @@ public class Percolation {
             }
             if (isOpen(i, col)) {
                 TopSet.union(getIndex(i, col), index);
-                RowpSet.union(row, i);
+                TopDownSet.union(getIndex(i, col), index);
             }
         }
         for (int i = col - 1; i <= col + 1; i += 2) {
@@ -74,6 +79,7 @@ public class Percolation {
             }
             if (isOpen(row, i)) {
                 TopSet.union(getIndex(row, i), index);
+                TopDownSet.union(getIndex(row, i), index);
             }
         }
     }
