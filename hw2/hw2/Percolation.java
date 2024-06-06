@@ -5,7 +5,8 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
     private int Limation;
     private int[][] Array;
-    private WeightedQuickUnionUF Set;
+    private WeightedQuickUnionUF TopSet;
+    private WeightedQuickUnionUF RowpSet;
     private int count;
     public Percolation(int N) {
         if (N <= 0) {
@@ -13,12 +14,10 @@ public class Percolation {
         }
         Array = new int[N][N];
         Limation = N;
-        Set = new WeightedQuickUnionUF(N * N + 2);
+        TopSet = new WeightedQuickUnionUF(N * N + 1);
+        RowpSet = new WeightedQuickUnionUF(N);
         for (int i = 0; i < N; i++) {
-            Set.union(i, N * N);
-        }
-        for (int i = 0; i < N; i++) {
-            Set.union(N * (N - 1) + i, N * N + 1);
+            TopSet.union(i, N * N);
         }
         count = 0;
     }
@@ -39,15 +38,15 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        int x = Limation * Limation;
-        return Set.connected(x, x + 1) && count > 0;
+        return RowpSet.connected(0, Limation - 1) && count > 0;
     }
 
     public boolean isFull(int row, int col) {
         if (row >= Limation || col >= Limation) {
             throw new IndexOutOfBoundsException("Out of Bounds");
         }
-        return Set.connected(getIndex(row, col), Limation * Limation) && isOpen(row, col);
+        int x = getIndex(row, col);
+        return TopSet.connected(x, Limation * Limation) && isOpen(row, col);
     }
 
     public void open(int row, int col) {
@@ -65,7 +64,8 @@ public class Percolation {
                 continue;
             }
             if (isOpen(i, col)) {
-                Set.union(getIndex(i, col), index);
+                TopSet.union(getIndex(i, col), index);
+                RowpSet.union(row, i);
             }
         }
         for (int i = col - 1; i <= col + 1; i += 2) {
@@ -73,7 +73,7 @@ public class Percolation {
                 continue;
             }
             if (isOpen(row, i)) {
-                Set.union(getIndex(row, i), index);
+                TopSet.union(getIndex(row, i), index);
             }
         }
     }
