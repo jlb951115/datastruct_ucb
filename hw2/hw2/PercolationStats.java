@@ -29,17 +29,19 @@ public class PercolationStats {
 
     public double mean() {
         double mean = 0.0;
+        double dio = N * N;
         for (int i = 0; i < T; i++) {
-            mean += (double)(Experiments[i].numberOfOpenSites() / N / N);
+            mean += (double) (Experiments[i].numberOfOpenSites())/ dio;
         }
         return mean / T;
     }
 
     public double stddev() {
         double m = this.mean();
+        double dio = N * N;
         double std = 0.0;
         for (int i = 0; i < T; i++) {
-            double temp = (double)(Experiments[i].numberOfOpenSites() / N / N)- m;
+            double temp = (double)(Experiments[i].numberOfOpenSites()) / dio - m;
             std = std + temp * temp;
         }
         return std / (T - 1);
@@ -51,5 +53,10 @@ public class PercolationStats {
 
     public double confidenceHigh() {
         return this.mean() + (1.96 * Math.sqrt(this.stddev()) / Math.sqrt(T));
+    }
+
+    public static void main(String[] args) {
+        double x = 3 * 3;
+        System.out.println(1 / x);
     }
 }
