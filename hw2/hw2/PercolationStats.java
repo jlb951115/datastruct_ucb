@@ -1,9 +1,11 @@
 package hw2;
 
 import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
-    private Percolation[] Experiments;
+    private Percolation[] experiments;
+    private static final double CONSTANT = 1.96;
     private int T;
     private int N;
     public PercolationStats(int N, int T, PercolationFactory pf) {
@@ -12,47 +14,43 @@ public class PercolationStats {
         }
         this.N = N;
         this.T = T;
-        Experiments = new Percolation[T];
+        experiments = new Percolation[T];
         for (int i = 0; i < T; i++) {
-            Experiments[i] = pf.make(N);
+            experiments[i] = pf.make(N);
         }
         for (int i = 0; i < T; i++) {
-            while (!Experiments[i].percolates()) {
+            while (!experiments[i].percolates()) {
                 int row = StdRandom.uniform(N);
                 int col = StdRandom.uniform(N);
-                if (!Experiments[i].isOpen(row, col)) {
-                    Experiments[i].open(row, col);
+                if (!experiments[i].isOpen(row, col)) {
+                    experiments[i].open(row, col);
                 }
             }
         }
     }
 
     public double mean() {
-        double mean = 0.0;
-        double dio = N * N;
+        double[] x = new double[T];
         for (int i = 0; i < T; i++) {
-            mean += (double) (Experiments[i].numberOfOpenSites())/ dio;
+            x[i] = (double) (experiments[i].numberOfOpenSites()) / (double) (N * N);
         }
-        return mean / T;
+        return StdStats.mean(x);
     }
 
     public double stddev() {
-        double m = this.mean();
-        double dio = N * N;
-        double std = 0.0;
+        double[] x = new double[T];
         for (int i = 0; i < T; i++) {
-            double temp = (double)(Experiments[i].numberOfOpenSites()) / dio - m;
-            std = std + temp * temp;
+            x[i] = (double) (experiments[i].numberOfOpenSites()) / (double) (N * N);
         }
-        return std / (double)(T - 1);
+        return StdStats.stddev(x);
     }
 
     public double confidenceLow() {
-        return this.mean() - (1.96 * Math.sqrt(this.stddev()) / Math.sqrt(T));
+        return this.mean() - (CONSTANT * Math.sqrt(this.stddev()) / Math.sqrt(T));
     }
 
     public double confidenceHigh() {
-        return this.mean() + (1.96 * Math.sqrt(this.stddev()) / Math.sqrt(T));
+        return this.mean() + (CONSTANT * Math.sqrt(this.stddev()) / Math.sqrt(T));
     }
 
 }
