@@ -40,7 +40,7 @@ public class Percolation {
 
     public boolean percolates() {
         int x = Limation * Limation;
-        return Set.connected(x, x + 1);
+        return Set.connected(x, x + 1) && count > 0;
     }
 
     public boolean isFull(int row, int col) {
@@ -53,6 +53,9 @@ public class Percolation {
     public void open(int row, int col) {
         if (row >= Limation || col >= Limation) {
             throw new IndexOutOfBoundsException("Out of Bounds");
+        }
+        if (isOpen(row, col)) {
+            return;
         }
         Array[row][col] = 1;
         count += 1;
