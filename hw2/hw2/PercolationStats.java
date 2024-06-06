@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
-    private Percolation[] experiments;
+    private double[] experiments;
     private static final double CONSTANT = 1.96;
     private int T;
     private int N;
@@ -14,35 +14,26 @@ public class PercolationStats {
         }
         this.N = N;
         this.T = T;
-        experiments = new Percolation[T];
+        experiments = new double[T];
         for (int i = 0; i < T; i++) {
-            experiments[i] = pf.make(N);
-        }
-        for (int i = 0; i < T; i++) {
-            while (!experiments[i].percolates()) {
+            Percolation p = pf.make(N);
+            while (!p.percolates()) {
                 int row = StdRandom.uniform(N);
                 int col = StdRandom.uniform(N);
-                if (!experiments[i].isOpen(row, col)) {
-                    experiments[i].open(row, col);
+                if (!p.isOpen(row, col)) {
+                    p.open(row, col);
                 }
             }
+            experiments[i] = (double) (p.numberOfOpenSites()) / (double) (N * N);
         }
     }
 
     public double mean() {
-        double[] x = new double[T];
-        for (int i = 0; i < T; i++) {
-            x[i] = (double) (experiments[i].numberOfOpenSites()) / (double) (N * N);
-        }
-        return StdStats.mean(x);
+        return StdStats.mean(experiments);
     }
 
     public double stddev() {
-        double[] x = new double[T];
-        for (int i = 0; i < T; i++) {
-            x[i] = (double) (experiments[i].numberOfOpenSites()) / (double) (N * N);
-        }
-        return StdStats.stddev(x);
+        return StdStats.stddev(experiments);
     }
 
     public double confidenceLow() {
