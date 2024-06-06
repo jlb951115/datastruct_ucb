@@ -3,38 +3,38 @@ package hw2;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    private int Limation;
-    private int[][] Array;
-    private WeightedQuickUnionUF TopDownSet;
-    private WeightedQuickUnionUF TopSet;
+    private int limation;
+    private int[][] array;
+    private WeightedQuickUnionUF topDownSet;
+    private WeightedQuickUnionUF topSet;
     private int count;
     public Percolation(int N) {
         if (N <= 0) {
             throw new IllegalArgumentException("Illegal Argument");
         }
-        Array = new int[N][N];
-        Limation = N;
-        TopDownSet = new WeightedQuickUnionUF(N * N + 2);
-        TopSet = new WeightedQuickUnionUF(N * N + 1);
+        array = new int[N][N];
+        limation = N;
+        topDownSet = new WeightedQuickUnionUF(N * N + 2);
+        topSet = new WeightedQuickUnionUF(N * N + 1);
         for (int i = 0; i < N; i++) {
-            TopSet.union(i, N * N);
-            TopDownSet.union(i, N * N);
+            topSet.union(i, N * N);
+            topDownSet.union(i, N * N);
         }
         for (int i = 0; i < N; i++) {
-            TopDownSet.union(N * (N - 1) + i, N * N + 1);
+            topDownSet.union(N * (N - 1) + i, N * N + 1);
         }
         count = 0;
     }
 
     private int getIndex(int row, int col) {
-        return row * Limation + col;
+        return row * limation + col;
     }
 
     public boolean isOpen(int row, int col) {
-        if (row >= Limation || col >= Limation) {
+        if (row >= limation || col >= limation) {
             throw new IndexOutOfBoundsException("Out of Bounds");
         }
-        return Array[row][col] == 1;
+        return array[row][col] == 1;
     }
 
     public int numberOfOpenSites() {
@@ -42,44 +42,44 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        int x = Limation * Limation;
-        return TopDownSet.connected(x, x + 1) && count > 0;
+        int x = limation * limation;
+        return topDownSet.connected(x, x + 1) && count > 0;
     }
 
     public boolean isFull(int row, int col) {
-        if (row >= Limation || col >= Limation) {
+        if (row >= limation || col >= limation) {
             throw new IndexOutOfBoundsException("Out of Bounds");
         }
         int x = getIndex(row, col);
-        return isOpen(row, col) && TopSet.connected(x, Limation * Limation);
+        return isOpen(row, col) && topSet.connected(x, limation * limation);
     }
 
     public void open(int row, int col) {
-        if (row >= Limation || col >= Limation) {
+        if (row >= limation || col >= limation) {
             throw new IndexOutOfBoundsException("Out of Bounds");
         }
         if (isOpen(row, col)) {
             return;
         }
-        Array[row][col] = 1;
+        array[row][col] = 1;
         count += 1;
         int index = getIndex(row, col);
         for (int i = row - 1; i <= row + 1; i += 2) {
-            if (i < 0 || i >= Limation) {
+            if (i < 0 || i >= limation) {
                 continue;
             }
             if (isOpen(i, col)) {
-                TopSet.union(getIndex(i, col), index);
-                TopDownSet.union(getIndex(i, col), index);
+                topSet.union(getIndex(i, col), index);
+                topDownSet.union(getIndex(i, col), index);
             }
         }
         for (int i = col - 1; i <= col + 1; i += 2) {
-            if (i < 0 || i >= Limation) {
+            if (i < 0 || i >= limation) {
                 continue;
             }
             if (isOpen(row, i)) {
-                TopSet.union(getIndex(row, i), index);
-                TopDownSet.union(getIndex(row, i), index);
+                topSet.union(getIndex(row, i), index);
+                topDownSet.union(getIndex(row, i), index);
             }
         }
     }

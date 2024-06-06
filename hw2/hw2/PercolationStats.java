@@ -44,7 +44,7 @@ public class PercolationStats {
             double temp = (double)(Experiments[i].numberOfOpenSites()) / dio - m;
             std = std + temp * temp;
         }
-        return std / (T - 1);
+        return std / (double)(T - 1);
     }
 
     public double confidenceLow() {
